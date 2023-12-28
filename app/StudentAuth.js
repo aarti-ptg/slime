@@ -1,21 +1,21 @@
-import "react-native-url-polyfill/auto";
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Link } from "expo-router";
 
-export default function HomePage() {
+export default function StudentAuth() {
   return (
     <View style={styles.container}>
-      <Link href="/TeacherAuth" style={styles.button}>
-        Teacher
+      <Link href="/StudentSignUp" style={styles.button}>
+        Sign Up
       </Link>
-      <Link href="/StudentAuth" style={styles.button}>
-        Student
+      <Link href="/StudentLogin" style={styles.button}>
+        Log In
       </Link>
     </View>
   );
 }
 
+// Use the same styles as in TeacherAuth
 const styles = StyleSheet.create({
   container: {
     flex: 1,
