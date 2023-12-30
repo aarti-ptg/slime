@@ -1,7 +1,10 @@
+// TeacherSignUp.js
 import React, { useState } from "react";
 import { View, Alert, StyleSheet } from "react-native";
-import { supabase } from "./supabase"; // Adjust the import path as needed
+import { supabase } from "./supabase";
 import { Button, Input } from "react-native-elements";
+import { useRouting } from "expo-router";
+import { router } from "expo-router";
 
 export default function TeacherSignUp() {
   const [email, setEmail] = useState("");
@@ -15,37 +18,26 @@ export default function TeacherSignUp() {
     const { user, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+        },
+      },
     });
-    console.log(session);
+
+    setLoading(false);
     if (error) {
       Alert.alert("Signup failed", error.message);
-      setLoading(false);
       return;
     }
 
-    if (user) {
-      const { error: insertError } = await supabase
-        .from("teacher")
-        .insert([
-          {
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            password: password,
-          },
-        ])
-        .single();
-
-      if (insertError) {
-        Alert.alert("Signup failed", insertError.message);
-      } else {
-        Alert.alert(
-          "Signup successful",
-          "Please check your inbox for email verification!"
-        );
-      }
-    }
-    setLoading(false);
+    Alert.alert(
+      "Signup successful",
+      "Please check your inbox for email verification!"
+    );
+    // Redirect to TeacherWelcomeScreen
+    router.replace("/TeacherWelcomeScreen");
   }
 
   return (
