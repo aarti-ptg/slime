@@ -1,32 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { supabase } from "./supabase";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const TeacherWelcomeScreen = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchUserFromLocalStorage = async () => {
-    try {
-      const sessionData = await AsyncStorage.getItem("supabase.auth.token");
-      if (sessionData) {
-        const session = JSON.parse(sessionData);
-        return session.currentSession?.user || null;
-      }
-      return null;
-    } catch (error) {
-      console.error("Error fetching user from local storage:", error);
-      return null;
-    }
-  };
-
   useEffect(() => {
     const fetchProfile = async () => {
-      // Usage
-      const user = await fetchUserFromLocalStorage();
-      console.log(user);
-
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (user) {
         const { data, error } = await supabase
           .from("profiles")

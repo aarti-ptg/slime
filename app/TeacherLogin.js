@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, Alert, StyleSheet } from "react-native";
 import { supabase } from "./supabase";
+import { router } from "expo-router";
 
 export default function TeacherSignIn() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ export default function TeacherSignIn() {
       Alert.alert("Login failed", error.message);
     } else {
       Alert.alert("Login successful");
-      // Navigate to teacher's dashboard or home screen
+      router.replace("/TeacherWelcomeScreen");
     }
   };
 
