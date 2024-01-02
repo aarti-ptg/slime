@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from "react-native"; // Import ScrollView
 import { Calendar } from 'react-native-calendars';
 import { supabase } from "./supabase";
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 
 const TeacherWelcomeScreen = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState('');
+  const navigation = useNavigation(); // Initialize navigation
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -31,7 +33,19 @@ const TeacherWelcomeScreen = () => {
     };
 
     fetchProfile();
-  }, []);
+
+    // Dynamically set navigation options
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          onPress={() => console.log('Button pressed!')}
+          title="Right Button"
+          color="#fff"
+        />
+      ),
+    });
+    
+  }, [navigation]);
 
   const fetchEventsForDay = async (dateString) => {
     // Fetch events from your database for the selected date

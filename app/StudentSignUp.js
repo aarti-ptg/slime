@@ -6,7 +6,7 @@ import { Button, Input } from "react-native-elements";
 import { useRouting } from "expo-router";
 import { router } from "expo-router";
 
-export default function TeacherSignUp() {
+export default function StudentSignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -22,16 +22,42 @@ export default function TeacherSignUp() {
         data: {
           first_name: firstName,
           last_name: lastName,
-          isTeacher: true,
+          isTeacher: false,
         },
       },
     });
 
-    setLoading(false);
     if (error) {
       Alert.alert("Signup failed", error.message);
+      setLoading(false);
       return;
     }
+
+    // User signed up successfully, now let's insert additional data
+    if (user) {
+      const { data, insertError } = await supabase
+        .from('profiles') // Replace 'profiles' with your actual table name
+        .insert([
+          {
+            id: user.id, // Make sure 'id' is your primary key in the 'profiles' table
+            first_name: firstName,
+            last_name: lastName,
+            isTeacher: false, // Since this is the TeacherSignUp, we set it to true
+          },
+        ]);
+
+      if (insertError) {
+        Alert.alert("Signup failed", insertError.message);
+      } else {
+        Alert.alert(
+          "Signup successful",
+          "Please check your inbox for email verification!"
+        );
+        router.replace("/TeacherWelcomeScreen");
+      }
+    }
+
+    setLoading(false);
 
     Alert.alert(
       "Signup successful",
