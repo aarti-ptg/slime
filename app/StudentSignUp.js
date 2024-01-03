@@ -1,4 +1,4 @@
-// TeacherSignUp.js
+// StudentSignUp.js
 import React, { useState } from "react";
 import { View, Alert, StyleSheet } from "react-native";
 import { supabase } from "./supabase";
@@ -6,7 +6,7 @@ import { Button, Input } from "react-native-elements";
 import { useRouting } from "expo-router";
 import { router } from "expo-router";
 
-export default function TeacherSignUp() {
+export default function StudentSignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -22,7 +22,7 @@ export default function TeacherSignUp() {
         data: {
           first_name: firstName,
           last_name: lastName,
-          is_teacher: true,
+          is_teacher: false,
         },
       },
     });
@@ -37,8 +37,7 @@ export default function TeacherSignUp() {
       "Signup successful",
       "Please check your inbox for email verification!"
     );
-    // Redirect to TeacherWelcomeScreen
-    router.replace("/TeacherWelcomeScreen");
+    router.replace("/StudentWelcomeScreen");
   }
 
   return (
@@ -74,11 +73,7 @@ export default function TeacherSignUp() {
         placeholder="Password"
         autoCapitalize="none"
       />
-      <Button
-        title="Sign Up"
-        disabled={loading}
-        onPress={() => signUpWithEmail()}
-      />
+      <Button title="Sign Up" disabled={loading} onPress={signUpWithEmail} />
     </View>
   );
 }
