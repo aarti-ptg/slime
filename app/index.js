@@ -1,33 +1,25 @@
-import "react-native-url-polyfill/auto";
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Link } from "expo-router";
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from './LoginScreen';
+import SignUpScreen from './SignUpScreen';
+import WelcomeScreen from './WelcomeScreen';
 
-export default function HomePage() {
+const Stack = createStackNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Link href="/TeacherAuth" style={styles.button}>
-        Teacher
-      </Link>
-      <Link href="/StudentAuth" style={styles.button}>
-        Student
-      </Link>
-    </View>
+    
+    <Stack.Navigator
+    initialRouteName="Login"
+    screenOptions={{ headerShown: false }}
+    >
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
+        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      </Stack.Navigator>
+    
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  button: {
-    padding: 10,
-    margin: 10,
-    backgroundColor: "#007bff",
-    color: "white",
-    textAlign: "center",
-    borderRadius: 5,
-  },
-});
+export default App;
